@@ -7,6 +7,7 @@ test('Base API', t => {
         [
             'flatten',
             'unflatten',
+            'validKeys',
         ].sort(),
     );
 });
@@ -43,6 +44,23 @@ test('ofl.unflatten', t => {
     t.deepEqual(
         ofl.unflatten({'a/b.b/c': 1}, null, '/'),
         {a: {'b.b': {c: 1}}},
+        'delimiter',
+    );
+});
+
+test('ofl.validKeys', t => {
+    t.throws(
+        () => ofl.validKeys(['a', 'a']),
+        'Duplicated key: a',
+        'no duplicated keys',
+    );
+    t.throws(
+        () => ofl.validKeys(['a', 'a.b']),
+        'Can not add field to scalar key: a',
+        'no fields added to scalar key',
+    );
+    t.notThrows(
+        () => ofl.validKeys(['a', 'a.b', 'c/d'], '/'),
         'delimiter',
     );
 });
