@@ -1,4 +1,7 @@
-const isObject = value => ({}).toString.call(value) === '[object Object]';
+const type = v => ({}).toString.call(v).slice(8, -1);
+const isObject = v => type(v) === 'Object';
+const isScalar = v => ['Boolean', 'Null', 'Number', 'String'].includes(type(v));
+const isValid = v => isScalar(v) || type(v) === 'Array' && v.every(isScalar);
 
 const validKeys = (keys, delimiter = '.') => {
     keys.sort();
@@ -11,6 +14,17 @@ const validKeys = (keys, delimiter = '.') => {
             throw new Error(`Can not add field to scalar key: ${keys[i - 1]}`);
         }
     }
+};
+
+const validObject = (obj, delimiter = '.') => {
+    const keys = Object.keys(obj);
+
+    validKeys(keys, prefix, delimiter);
+    keys.forEach(key => {
+        if(!isValid(obj[key])){
+            throw new Error(`Invalid value type in field ${key}`);
+        }
+    });
 };
 
 const flatten = (obj, prefix = '', delimiter = '.') => {
@@ -53,4 +67,4 @@ const unflatten = (obj, prefix = '', delimiter = '.') => {
     return result;
 };
 
-module.exports = {flatten, unflatten, validKeys};
+module.exports = {flatten, unflatten, validKeys, validObject};
