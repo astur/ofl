@@ -28,3 +28,21 @@ test('ofl.flatten', t => {
         'delimiter',
     );
 });
+
+test('ofl.unflatten', t => {
+    t.deepEqual(
+        ofl.unflatten({'a.b.c': 1}),
+        {a: {b: {c: 1}}},
+        'easy object',
+    );
+    t.deepEqual(
+        ofl.unflatten({'a.b.c': 1}, 'a'),
+        {b: {c: 1}},
+        'prefix',
+    );
+    t.deepEqual(
+        ofl.unflatten({'a/b.b/c': 1}, null, '/'),
+        {a: {'b.b': {c: 1}}},
+        'delimiter',
+    );
+});
