@@ -61,8 +61,12 @@ test('ofl.validKeys', t => {
         'no fields added to scalar key',
     );
     t.notThrows(
-        () => ofl.validKeys(['a', 'a.b', 'c/d'], '/'),
+        () => ofl.validKeys(['a', 'a.b', 'c/d'], null, '/'),
         'delimiter',
+    );
+    t.notThrows(
+        () => ofl.validKeys(['a.b', 'a.b', 'bb', 'bb', 'b.c', 'b.d'], 'b'),
+        'prefix',
     );
 });
 
@@ -81,8 +85,12 @@ test('ofl.validObject', t => {
         'no fields added to scalar key',
     );
     t.notThrows(
-        () => ofl.validObject({a: 1, 'a.b': 1, 'c/d': 1}, '/'),
+        () => ofl.validObject({a: 1, 'a.b': 1, 'c/d': 1}, null, '/'),
         'delimiter',
+    );
+    t.notThrows(
+        () => ofl.validObject({a: 1, 'a.b': 1, 'b.c': 1}, 'b'),
+        'prefix',
     );
     t.throws(
         () => ofl.validObject({a: undefined}),

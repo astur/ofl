@@ -2,9 +2,11 @@ const type = v => ({}).toString.call(v).slice(8, -1);
 const isObject = v => type(v) === 'Object';
 const isScalar = v => ['Boolean', 'Null', 'Number', 'String'].includes(type(v));
 const isValid = v => isScalar(v) || type(v) === 'Array' && v.every(isScalar);
+const prefixFilter = (a, p) => p ? a.filter(v => v.startsWith(p)) : a;
 
-const validKeys = (keys, delimiter = '.') => {
+const validKeys = (keys, prefix = '', delimiter = '.') => {
     keys.sort();
+    keys = prefixFilter(keys, prefix ? prefix + delimiter : '');
 
     for(let i = 1, l = keys.length; i < l; i++){
         if(keys[i] === keys[i - 1]){
@@ -16,8 +18,8 @@ const validKeys = (keys, delimiter = '.') => {
     }
 };
 
-const validObject = (obj, delimiter = '.') => {
-    const keys = Object.keys(obj);
+const validObject = (obj, prefix = '', delimiter = '.') => {
+    const keys = prefixFilter(Object.keys(obj), prefix ? prefix + delimiter : '');
 
     validKeys(keys, prefix, delimiter);
     keys.forEach(key => {
