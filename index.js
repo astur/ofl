@@ -1,5 +1,18 @@
 const isObject = value => ({}).toString.call(value) === '[object Object]';
 
+const validKeys = (keys, delimiter = '.') => {
+    keys.sort();
+
+    for(let i = 1, l = keys.length; i < l; i++){
+        if(keys[i] === keys[i - 1]){
+            throw new Error(`Duplicated key: ${keys[i]}`);
+        }
+        if(keys[i].startsWith(keys[i - 1] + delimiter)){
+            throw new Error(`Can not add field to scalar key: ${keys[i - 1]}`);
+        }
+    }
+};
+
 const flatten = (obj, prefix = '', delimiter = '.') => {
     const result = {};
 
@@ -40,4 +53,4 @@ const unflatten = (obj, prefix = '', delimiter = '.') => {
     return result;
 };
 
-module.exports = {flatten, unflatten};
+module.exports = {flatten, unflatten, validKeys};
