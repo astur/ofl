@@ -4,9 +4,16 @@
   "description": "Convertion between nested object and flat one with delimited keys.",
   "main": "index.js",
   "author": "astur <astur@yandex.ru> (http://kozlov.am/)",
+  "scripts": {
+    "test": "eslint ."
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/astur/ofl.git"
+  },
+  "devDependencies": {
+    "eslint": "^4.7.2",
+    "eslint-config-astur": "0.0.2"
   },
   "license": "MIT"
 }
