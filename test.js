@@ -100,7 +100,7 @@ test('ofl.validObject', t => {
     t.throws(
         () => ofl.validObject({a: new Date()}),
         'Invalid value type in field a',
-        'no undefined fields',
+        'no impure objects',
     );
     t.throws(
         () => ofl.validObject({a: [{}]}),
