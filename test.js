@@ -29,6 +29,11 @@ test('ofl.flatten', t => {
         {'a/b.b/c': 1},
         'delimiter',
     );
+    t.throws(
+        () => ofl.flatten({a: undefined}),
+        'Invalid value type in field a',
+        'validObject check for flatten',
+    );
 });
 
 test('ofl.unflatten', t => {
@@ -46,6 +51,11 @@ test('ofl.unflatten', t => {
         ofl.unflatten({'a/b.b/c': 1}, null, '/'),
         {a: {'b.b': {c: 1}}},
         'delimiter',
+    );
+    t.throws(
+        () => ofl.unflatten({a: undefined}),
+        'Invalid value type in field a',
+        'validObject check for unflatten',
     );
 });
 

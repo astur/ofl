@@ -29,14 +29,14 @@ const validObject = (obj, prefix = '', delimiter = '.') => {
     });
 };
 
-const flatten = (obj, prefix = '', delimiter = '.') => {
+const _flatten = (obj, prefix = '', delimiter = '.') => {
     const result = {};
 
     Object.keys(obj).sort().forEach(key => {
         const flatKey = prefix ? prefix + delimiter + key : key;
 
         if(isObject(obj[key])){
-            Object.assign(result, flatten(obj[key], flatKey, delimiter));
+            Object.assign(result, _flatten(obj[key], flatKey, delimiter));
         } else {
             result[flatKey] = obj[key];
         }
@@ -45,7 +45,7 @@ const flatten = (obj, prefix = '', delimiter = '.') => {
     return result;
 };
 
-const unflatten = (obj, prefix = '', delimiter = '.') => {
+const _unflatten = (obj, prefix = '', delimiter = '.') => {
     const result = {};
     const nested = new Set();
     const keys = Object.keys(obj).sort()
@@ -63,10 +63,21 @@ const unflatten = (obj, prefix = '', delimiter = '.') => {
     }
 
     for(const k of nested){
-        result[k] = unflatten(obj, prefix ? prefix + delimiter + k : k, delimiter);
+        result[k] = _unflatten(obj, prefix ? prefix + delimiter + k : k, delimiter);
     }
 
     return result;
+};
+
+const flatten = (obj, prefix = '', delimiter = '.') => {
+    const result = _flatten(obj, prefix, delimiter);
+    validObject(result, prefix, delimiter);
+    return result;
+};
+
+const unflatten = (obj, prefix = '', delimiter = '.') => {
+    validObject(obj, prefix, delimiter);
+    return _unflatten(obj, prefix, delimiter);
 };
 
 module.exports = {flatten, unflatten, validKeys, validObject};
