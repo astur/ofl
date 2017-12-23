@@ -70,9 +70,14 @@ test('ofl.validKeys', t => {
         'Can not add field to scalar key: a',
         'no fields added to scalar key',
     );
+    t.throws(
+        () => ofl.validKeys(['a', 'afc', 'ab'], 'f'),
+        'Can not add field to scalar key: a',
+        'alpha delimiter',
+    );
     t.notThrows(
         () => ofl.validKeys(['a', 'a.b', 'c/d'], '/'),
-        'delimiter',
+        'non-alpha delimiter',
     );
 });
 

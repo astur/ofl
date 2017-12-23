@@ -4,16 +4,10 @@ const isScalar = v => ['Boolean', 'Null', 'Number', 'String'].includes(type(v));
 const isValid = v => isScalar(v) || type(v) === 'Array' && v.every(isScalar);
 
 const validKeys = (keys, delimiter = '.') => {
-    keys.sort();
-
-    for(let i = 1, l = keys.length; i < l; i++){
-        if(keys[i] === keys[i - 1]){
-            throw new Error(`Duplicated key: ${keys[i]}`);
-        }
-        if(keys[i].startsWith(keys[i - 1] + delimiter)){
-            throw new Error(`Can not add field to scalar key: ${keys[i - 1]}`);
-        }
-    }
+    keys.forEach((key, i, arr) => {
+        if(i !== arr.indexOf(key)) throw new Error(`Duplicated key: ${key}`);
+        if(arr.some(v => v.startsWith(`${key}${delimiter}`))) throw new Error(`Can not add field to scalar key: ${key}`);
+    });
 };
 
 const validObject = (obj, prefix = '', delimiter = '.') => {
