@@ -71,12 +71,8 @@ test('ofl.validKeys', t => {
         'no fields added to scalar key',
     );
     t.notThrows(
-        () => ofl.validKeys(['a', 'a.b', 'c/d'], null, '/'),
+        () => ofl.validKeys(['a', 'a.b', 'c/d'], '/'),
         'delimiter',
-    );
-    t.notThrows(
-        () => ofl.validKeys(['a.b', 'a.b', 'bb', 'bb', 'b.c', 'b.d'], 'b'),
-        'prefix',
     );
 });
 

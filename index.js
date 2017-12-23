@@ -4,9 +4,8 @@ const isScalar = v => ['Boolean', 'Null', 'Number', 'String'].includes(type(v));
 const isValid = v => isScalar(v) || type(v) === 'Array' && v.every(isScalar);
 const prefixFilter = (a, p) => p ? a.filter(v => v.startsWith(p)) : a;
 
-const validKeys = (keys, prefix = '', delimiter = '.') => {
+const validKeys = (keys, delimiter = '.') => {
     keys.sort();
-    keys = prefixFilter(keys, prefix ? prefix + delimiter : '');
 
     for(let i = 1, l = keys.length; i < l; i++){
         if(keys[i] === keys[i - 1]){
@@ -21,7 +20,7 @@ const validKeys = (keys, prefix = '', delimiter = '.') => {
 const validObject = (obj, prefix = '', delimiter = '.') => {
     const keys = prefixFilter(Object.keys(obj), prefix ? prefix + delimiter : '');
 
-    validKeys(keys, prefix, delimiter);
+    validKeys(keys, delimiter);
     keys.forEach(key => {
         if(!isValid(obj[key])){
             throw new Error(`Invalid value type in field ${key}`);
