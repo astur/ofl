@@ -20,12 +20,7 @@ test('ofl.flatten', t => {
         'easy object',
     );
     t.deepEqual(
-        ofl.flatten({b: {c: 1}}, 'a'),
-        {'a.b.c': 1},
-        'prefix',
-    );
-    t.deepEqual(
-        ofl.flatten({a: {'b.b': {c: 1}}}, null, '/'),
+        ofl.flatten({a: {'b.b': {c: 1}}}, '/'),
         {'a/b.b/c': 1},
         'delimiter',
     );
@@ -43,12 +38,7 @@ test('ofl.unflatten', t => {
         'easy object',
     );
     t.deepEqual(
-        ofl.unflatten({'a.b.c': 1}, 'a'),
-        {b: {c: 1}},
-        'prefix',
-    );
-    t.deepEqual(
-        ofl.unflatten({'a/b.b/c': 1}, null, '/'),
+        ofl.unflatten({'a/b.b/c': 1}, '/'),
         {a: {'b.b': {c: 1}}},
         'delimiter',
     );

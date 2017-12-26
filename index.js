@@ -10,12 +10,8 @@ const validKeys = (keys, delimiter = '.') => {
     });
 };
 
-const validObject = (obj, prefix = '', delimiter = '.') => {
-    const keys = ((a, p) => p ? a.filter(v => v.startsWith(p)) : a)(
-        Object.keys(obj),
-        prefix ? prefix + delimiter : ''
-    );
-
+const validObject = (obj, delimiter = '.') => {
+    const keys = Object.keys(obj);
     validKeys(keys, delimiter);
     keys.forEach(key => {
         if(!isValid(obj[key])){
@@ -64,15 +60,15 @@ const _unflatten = (obj, prefix = '', delimiter = '.') => {
     return result;
 };
 
-const flatten = (obj, prefix = '', delimiter = '.') => {
-    const result = _flatten(obj, prefix, delimiter);
-    validObject(result, prefix, delimiter);
+const flatten = (obj, delimiter = '.') => {
+    const result = _flatten(obj, '', delimiter);
+    validObject(result, delimiter);
     return result;
 };
 
-const unflatten = (obj, prefix = '', delimiter = '.') => {
-    validObject(obj, prefix, delimiter);
-    return _unflatten(obj, prefix, delimiter);
+const unflatten = (obj, delimiter = '.') => {
+    validObject(obj, delimiter);
+    return _unflatten(obj, '', delimiter);
 };
 
 module.exports = {flatten, unflatten, validKeys, validObject};

@@ -19,15 +19,13 @@ npm install ofl
 const {flatten, unflatten} = require('ofl');
 
 // flat object from nested:
-flatObj = flatten(nestedObj, prefix, delimiter);
+flatObj = flatten(nestedObj, delimiter);
 
 // nested object from flat:
-nestedObj = unflatten(flatObj, prefix, delimiter);
+nestedObj = unflatten(flatObj, delimiter);
 ```
 
 In both functions require only one parameter - object for conversion.
-
-Optional `prefix` parameter defines prefix of flat object keys. Defaults to empty string.
 
 Optional `delimiter` parameter defines string to use for split flat object keys. Defaults to `'.'`.
 
