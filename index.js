@@ -1,3 +1,4 @@
+const inspect = require('util').inspect;
 const type = v => ({}).toString.call(v).slice(8, -1);
 const isObject = v => type(v) === 'Object';
 const isScalar = v => ['Boolean', 'Null', 'Number', 'String'].includes(type(v));
@@ -10,14 +11,15 @@ const validKeys = (keys, delimiter = '.') => {
     });
 };
 
-const validObject = (obj, delimiter = '.') => {
-    const keys = Object.keys(obj);
-    validKeys(keys, delimiter);
-    keys.forEach(key => {
-        if(!isValid(obj[key])){
-            throw new Error(`Invalid value type in field ${key}`);
-        }
+const validValues = values => {
+    values.forEach(v => {
+        if(!isValid(v)) throw new Error(`Invalid type of value: ${inspect(v)}`);
     });
+};
+
+const validObject = (obj, delimiter = '.') => {
+    validKeys(Object.keys(obj), delimiter);
+    validValues(Object.values(obj));
 };
 
 const _flatten = (obj, prefix = '', delimiter = '.') => {
@@ -71,4 +73,4 @@ const unflatten = (obj, delimiter = '.') => {
     return _unflatten(obj, '', delimiter);
 };
 
-module.exports = {flatten, unflatten, validKeys, validObject};
+module.exports = {flatten, unflatten, validKeys, validValues, validObject};

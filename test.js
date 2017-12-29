@@ -26,7 +26,7 @@ test('ofl.flatten', t => {
     );
     t.throws(
         () => ofl.flatten({a: undefined}),
-        'Invalid value type in field a',
+        'Invalid type of value: undefined',
         'validObject check for flatten',
     );
 });
@@ -44,7 +44,7 @@ test('ofl.unflatten', t => {
     );
     t.throws(
         () => ofl.unflatten({a: undefined}),
-        'Invalid value type in field a',
+        'Invalid type of value: undefined',
         'validObject check for unflatten',
     );
 });
@@ -95,27 +95,27 @@ test('ofl.validObject', t => {
     );
     t.throws(
         () => ofl.validObject({a: undefined}),
-        'Invalid value type in field a',
+        'Invalid type of value: undefined',
         'no undefined fields',
     );
     t.throws(
-        () => ofl.validObject({a: new Date()}),
-        'Invalid value type in field a',
+        () => ofl.validObject({a: new Date(0)}),
+        'Invalid type of value: 1970-01-01T00:00:00.000Z',
         'no impure objects',
     );
     t.throws(
         () => ofl.validObject({a: [{}]}),
-        'Invalid value type in field a',
+        'Invalid type of value: [ {} ]',
         'no object in arrays',
     );
     t.throws(
         () => ofl.validObject({a: [[]]}),
-        'Invalid value type in field a',
+        'Invalid type of value: [ [] ]',
         'no nested arrays',
     );
     t.throws(
         () => ofl.validObject({a: [undefined]}),
-        'Invalid value type in field a',
+        'Invalid type of value: [ undefined ]',
         'no undefined in arrays',
     );
 });
