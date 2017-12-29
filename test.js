@@ -1,18 +1,6 @@
 const test = require('ava');
 const ofl = require('.');
 
-test('Base API', t => {
-    t.deepEqual(
-        Object.keys(ofl).sort(),
-        [
-            'flatten',
-            'unflatten',
-            'validKeys',
-            'validObject',
-        ].sort(),
-    );
-});
-
 test('ofl.flatten', t => {
     t.deepEqual(
         ofl.flatten({a: {b: {c: 1}}}),
