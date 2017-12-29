@@ -44,8 +44,6 @@ const _unflatten = (obj, prefix = '', delimiter = '.') => {
     const keys = Object.keys(obj).sort()
         .filter(v => prefix ? v.startsWith(prefix + delimiter) : true);
 
-    if(keys.some(k => isObject(obj[k]))) return null;
-
     for(const k of keys){
         const key = prefix ? k.slice((prefix + delimiter).length) : k;
         if(key.indexOf(delimiter) === -1){
