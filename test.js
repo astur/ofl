@@ -1,6 +1,6 @@
 const test = require('ava');
 const ofl = require('.');
-const {DuplicateError, LevelError, SerializableError} = require('./lib/errors');
+const {KeyTypeError, DuplicateError, LevelError, SerializableError} = require('./lib/errors');
 
 test('ofl.flatten', t => {
     t.deepEqual(
@@ -39,6 +39,11 @@ test('ofl.unflatten', t => {
 });
 
 test('ofl.validKeys', t => {
+    t.throws(
+        () => ofl.validKeys([1, null]),
+        KeyTypeError,
+        'only strings allowed in keys',
+    );
     t.throws(
         () => ofl.validKeys(['a', 'a']),
         DuplicateError,

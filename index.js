@@ -1,8 +1,9 @@
-const {DuplicateError, LevelError, SerializableError} = require('./lib/errors');
-const {isObject, isSerializable} = require('easytype');
+const {KeyTypeError, DuplicateError, LevelError, SerializableError} = require('./lib/errors');
+const {isString, isObject, isSerializable} = require('easytype');
 
 const validKeys = (keys, delimiter = '.') => {
     keys.forEach((key, i, arr) => {
+        if(!isString(key)) throw new KeyTypeError(key);
         if(i !== arr.indexOf(key)) throw new DuplicateError(key);
         if(arr.some(v => v.startsWith(`${key}${delimiter}`))) throw new LevelError(key);
     });
