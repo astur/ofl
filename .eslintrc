@@ -1,3 +1,6 @@
 {
-    "extends": "astur"
+    "extends": "astur",
+    "rules": {
+        "prefer-arrow-callback": 0
+    }
 }

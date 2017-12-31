@@ -45,12 +45,12 @@ test('ofl.validKeys', t => {
     );
     t.throws(
         () => ofl.validKeys(['a', 'a.b']),
-        'Can not add field to scalar key: a',
+        'Can not add field to non-object key: a',
         'no fields added to scalar key',
     );
     t.throws(
         () => ofl.validKeys(['a', 'afc', 'ab'], 'f'),
-        'Can not add field to scalar key: a',
+        'Can not add field to non-object key: a',
         'alpha delimiter',
     );
     t.notThrows(
@@ -70,7 +70,7 @@ test('ofl.validObject', t => {
     );
     t.throws(
         () => ofl.validObject({a: 1, 'a.b': 2}),
-        'Can not add field to scalar key: a',
+        'Can not add field to non-object key: a',
         'no fields added to scalar key',
     );
     t.notThrows(
