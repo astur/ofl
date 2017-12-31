@@ -1,5 +1,6 @@
 const test = require('ava');
 const ofl = require('.');
+const {DuplicateError, LevelError, SerializableError} = require('./lib/errors');
 
 test('ofl.flatten', t => {
     t.deepEqual(
@@ -14,7 +15,7 @@ test('ofl.flatten', t => {
     );
     t.throws(
         () => ofl.flatten({a: undefined}),
-        'Invalid type of value: undefined',
+        SerializableError,
         'validObject check for flatten',
     );
 });
@@ -32,7 +33,7 @@ test('ofl.unflatten', t => {
     );
     t.throws(
         () => ofl.unflatten({a: undefined}),
-        'Invalid type of value: undefined',
+        SerializableError,
         'validObject check for unflatten',
     );
 });
@@ -40,17 +41,17 @@ test('ofl.unflatten', t => {
 test('ofl.validKeys', t => {
     t.throws(
         () => ofl.validKeys(['a', 'a']),
-        'Duplicated key: a',
+        DuplicateError,
         'no duplicated keys',
     );
     t.throws(
         () => ofl.validKeys(['a', 'a.b']),
-        'Can not add field to non-object key: a',
+        LevelError,
         'no fields added to scalar key',
     );
     t.throws(
         () => ofl.validKeys(['a', 'afc', 'ab'], 'f'),
-        'Can not add field to non-object key: a',
+        LevelError,
         'alpha delimiter',
     );
     t.notThrows(
@@ -70,7 +71,7 @@ test('ofl.validObject', t => {
     );
     t.throws(
         () => ofl.validObject({a: 1, 'a.b': 2}),
-        'Can not add field to non-object key: a',
+        LevelError,
         'no fields added to scalar key',
     );
     t.notThrows(
@@ -83,27 +84,27 @@ test('ofl.validObject', t => {
     );
     t.throws(
         () => ofl.validObject({a: undefined}),
-        'Invalid type of value: undefined',
+        SerializableError,
         'no undefined fields',
     );
     t.throws(
         () => ofl.validObject({a: new Date(0)}),
-        'Invalid type of value: 1970-01-01T00:00:00.000Z',
+        SerializableError,
         'no impure objects',
     );
     t.throws(
         () => ofl.validObject({a: [{}]}),
-        'Invalid type of value: [ {} ]',
+        SerializableError,
         'no object in arrays',
     );
     t.throws(
         () => ofl.validObject({a: [[]]}),
-        'Invalid type of value: [ [] ]',
+        SerializableError,
         'no nested arrays',
     );
     t.throws(
         () => ofl.validObject({a: [undefined]}),
-        'Invalid type of value: [ undefined ]',
+        SerializableError,
         'no undefined in arrays',
     );
 });
