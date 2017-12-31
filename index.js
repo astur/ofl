@@ -1,4 +1,4 @@
-const {DuplicateError, LevelError, SerialisableError} = require('./lib/errors');
+const {DuplicateError, LevelError, SerializableError} = require('./lib/errors');
 const type = v => ({}).toString.call(v).slice(8, -1);
 const isObject = v => type(v) === 'Object';
 const isScalar = v => ['Boolean', 'Null', 'Number', 'String'].includes(type(v));
@@ -13,7 +13,7 @@ const validKeys = (keys, delimiter = '.') => {
 
 const validValues = values => {
     values.forEach(v => {
-        if(!isValid(v)) throw new SerialisableError(v);
+        if(!isValid(v)) throw new SerializableError(v);
     });
 };
 
