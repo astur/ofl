@@ -4,23 +4,38 @@ const {KeyTypeError, DuplicateError, LevelError, SerializableError} = require('.
 
 test('ofl.flatten', t => {
     t.deepEqual(
+        ofl.flatten({a: 1, b: true, c: null, d: '', e: [1, true, null, '']}),
+        {a: 1, b: true, c: null, d: '', e: [1, true, null, '']},
+        'all valid types',
+    );
+    t.deepEqual(
         ofl.flatten({a: {b: {c: 1}}}),
         {'a.b.c': 1},
-        'easy object',
+        'easy nested object',
     );
     t.deepEqual(
         ofl.flatten({a: {'b.b': {c: 1}}}, '/'),
         {'a/b.b/c': 1},
         'delimiter',
     );
-    t.throws(
-        () => ofl.flatten({a: undefined}),
-        SerializableError,
-        'validObject check for flatten',
+    t.deepEqual(
+        ofl.flatten(Object.create(null, {a: {value: 1, enumerable: true}})),
+        {a: 1},
+        'pure object',
+    );
+    t.deepEqual(
+        ofl.flatten({a: 1, b: {}}),
+        {a: 1},
+        'empty object in field',
     );
 });
 
 test('ofl.unflatten', t => {
+    t.deepEqual(
+        ofl.unflatten({a: 1, b: true, c: null, d: '', e: [1, true, null, '']}),
+        {a: 1, b: true, c: null, d: '', e: [1, true, null, '']},
+        'all valid types',
+    );
     t.deepEqual(
         ofl.unflatten({'a.b.c': 1}),
         {a: {b: {c: 1}}},
@@ -30,11 +45,6 @@ test('ofl.unflatten', t => {
         ofl.unflatten({'a/b.b/c': 1}, '/'),
         {a: {'b.b': {c: 1}}},
         'delimiter',
-    );
-    t.throws(
-        () => ofl.unflatten({a: undefined}),
-        SerializableError,
-        'validObject check for unflatten',
     );
 });
 
