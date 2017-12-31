@@ -12,7 +12,8 @@
     "url": "https://github.com/astur/ofl.git"
   },
   "dependencies": {
-    "c-e": "^1.0.0"
+    "c-e": "^1.0.0",
+    "easytype": "0.0.4"
   },
   "devDependencies": {
     "ava": "^0.22.0",
