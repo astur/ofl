@@ -1,3 +1,4 @@
+const {DuplicateError, LevelError, SerialisableError} = require('./lib/errors');
 const inspect = require('util').inspect;
 const type = v => ({}).toString.call(v).slice(8, -1);
 const isObject = v => type(v) === 'Object';
@@ -6,14 +7,14 @@ const isValid = v => isScalar(v) || type(v) === 'Array' && v.every(isScalar);
 
 const validKeys = (keys, delimiter = '.') => {
     keys.forEach((key, i, arr) => {
-        if(i !== arr.indexOf(key)) throw new Error(`Duplicated key: ${key}`);
-        if(arr.some(v => v.startsWith(`${key}${delimiter}`))) throw new Error(`Can not add field to scalar key: ${key}`);
+        if(i !== arr.indexOf(key)) throw new DuplicateError(`Duplicated key: ${key}`);
+        if(arr.some(v => v.startsWith(`${key}${delimiter}`))) throw new LevelError(`Can not add field to scalar key: ${key}`);
     });
 };
 
 const validValues = values => {
     values.forEach(v => {
-        if(!isValid(v)) throw new Error(`Invalid type of value: ${inspect(v)}`);
+        if(!isValid(v)) throw new SerialisableError(`Invalid type of value: ${inspect(v)}`);
     });
 };
 
