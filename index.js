@@ -15,11 +15,6 @@ const validValues = values => {
     });
 };
 
-const validObject = (obj, delimiter = '.') => {
-    validKeys(Object.keys(obj), delimiter);
-    validValues(Object.values(obj));
-};
-
 const _flatten = (obj, prefix = '', delimiter = '.') => {
     const result = {};
 
@@ -58,15 +53,12 @@ const _unflatten = (obj, prefix = '', delimiter = '.') => {
     return result;
 };
 
-const flatten = (obj, delimiter = '.') => {
-    const result = _flatten(obj, '', delimiter);
-    validObject(result, delimiter);
-    return result;
-};
+const flatten = (obj, delimiter = '.') => _flatten(obj, '', delimiter);
 
 const unflatten = (obj, delimiter = '.') => {
-    validObject(obj, delimiter);
+    validKeys(Object.keys(obj), delimiter);
+    validValues(Object.values(obj));
     return _unflatten(obj, '', delimiter);
 };
 
-module.exports = {flatten, unflatten, validKeys, validValues, validObject};
+module.exports = {flatten, unflatten, validKeys, validValues};

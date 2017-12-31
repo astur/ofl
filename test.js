@@ -75,51 +75,34 @@ test('ofl.validKeys', t => {
     );
 });
 
-test('ofl.validObject', t => {
-    t.notThrows(
-        () => ofl.validObject({a: 1, b: true, c: null, d: ''}),
-        'all scalars',
-    );
-    t.notThrows(
-        () => ofl.validObject({a: [1, true, null, '']}),
-        'array of scalars',
-    );
+test('ofl.validValues', t => {
     t.throws(
-        () => ofl.validObject({a: 1, 'a.b': 2}),
-        LevelError,
-        'no fields added to scalar key',
-    );
-    t.notThrows(
-        () => ofl.validObject({a: 1, 'a.b': 1, 'c/d': 1}, null, '/'),
-        'delimiter',
-    );
-    t.notThrows(
-        () => ofl.validObject({a: 1, 'a.b': 1, 'b.c': 1}, 'b'),
-        'prefix',
-    );
-    t.throws(
-        () => ofl.validObject({a: undefined}),
+        () => ofl.validValues([undefined]),
         SerializableError,
-        'no undefined fields',
+        'no undefined values',
     );
     t.throws(
-        () => ofl.validObject({a: new Date(0)}),
+        () => ofl.validValues([new Date(0)]),
         SerializableError,
         'no impure objects',
     );
     t.throws(
-        () => ofl.validObject({a: [{}]}),
+        () => ofl.validValues([[{}]]),
         SerializableError,
         'no object in arrays',
     );
     t.throws(
-        () => ofl.validObject({a: [[]]}),
+        () => ofl.validValues([[[]]]),
         SerializableError,
         'no nested arrays',
     );
     t.throws(
-        () => ofl.validObject({a: [undefined]}),
+        () => ofl.validValues([[undefined]]),
         SerializableError,
         'no undefined in arrays',
+    );
+    t.notThrows(
+        () => ofl.validValues([1, true, null, '', [1, true, null, '']]),
+        'all valid types',
     );
 });
