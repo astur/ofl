@@ -1,4 +1,4 @@
-const {KeyTypeError, DuplicateError, LevelError, SerializableError} = require('./lib/errors');
+const {KeyTypeError, DuplicateError, LevelError, DelimiterError, SerializableError, ObjectError} = require('./lib/errors');
 const {isString, isObject, isSerializable} = require('easytype');
 
 const validKeys = (keys, delimiter = '.') => {
@@ -19,11 +19,15 @@ const _flatten = (obj, prefix = '', delimiter = '.') => {
     const result = {};
 
     Object.keys(obj).sort().forEach(key => {
+        if(key.includes(delimiter)) throw new DelimiterError(key);
+
         const flatKey = prefix ? prefix + delimiter + key : key;
 
         if(isObject(obj[key])){
+            if(!isObject.plain(obj[key])) throw new ObjectError(obj[key]);
             Object.assign(result, _flatten(obj[key], flatKey, delimiter));
         } else {
+            if(!isSerializable(obj[key])) throw new SerializableError(obj[key]);
             result[flatKey] = obj[key];
         }
     });
