@@ -1,6 +1,13 @@
 const test = require('ava');
 const ofl = require('.');
-const {KeyTypeError, DuplicateError, LevelError, DelimiterError, SerializableError, ObjectError} = require('./lib/errors');
+const {
+    KeyTypeError,
+    DuplicateError,
+    LevelError,
+    DelimiterError,
+    SerializableError,
+    ObjectError,
+} = require('./lib/errors');
 
 test('ofl.flatten', t => {
     t.deepEqual(
@@ -34,7 +41,12 @@ test('ofl.flatten', t => {
         'delimiter in key',
     );
     t.throws(
-        () => ofl.flatten({a: Object.create(Function.prototype, {a: {value: 1, enumerable: true}})}),
+        () => ofl.flatten({
+            a: Object.create(
+                Function.prototype,
+                {a: {value: 1, enumerable: true}},
+            ),
+        }),
         ObjectError,
         'non-plain object',
     );
