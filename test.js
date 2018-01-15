@@ -5,6 +5,7 @@ const {
     DuplicateError,
     LevelError,
     DelimiterError,
+    PatchError,
     SerializableError,
     ObjectError,
 } = require('./lib/errors');
@@ -72,6 +73,29 @@ test('ofl.unflatten', t => {
         ofl.unflatten({'a/b.b/c': 1}, '/'),
         {a: {'b.b': {c: 1}}},
         'delimiter',
+    );
+});
+
+test('ofl.patch', t => {
+    t.deepEqual(
+        ofl.patch({a: 1}, {a: 2}),
+        {a: 2},
+        '',
+    );
+    t.deepEqual(
+        ofl.patch({a: 1, b: 2}, {a: 3}),
+        {a: 3, b: 2},
+        '',
+    );
+    t.deepEqual(
+        ofl.patch({'a.b.c': 1}, {'a.b.c': 2}),
+        {'a.b.c': 2},
+        '',
+    );
+    t.throws(
+        () => ofl.patch({a: 1}, {b: 2}),
+        PatchError,
+        '',
     );
 });
 

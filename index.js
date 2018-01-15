@@ -3,6 +3,7 @@ const {
     DuplicateError,
     LevelError,
     DelimiterError,
+    PatchError,
     SerializableError,
     ObjectError,
 } = require('./lib/errors');
@@ -70,4 +71,11 @@ const unflatten = (obj, delimiter = '.') => {
     return _unflatten(obj, '', delimiter);
 };
 
-module.exports = {flatten, unflatten, validKeys, validValues};
+const patch = (obj, diff) => {
+    Object.keys(diff).forEach(key => {
+        if(!(key in obj)) throw new PatchError(key);
+    });
+    return Object.assign({}, obj, diff);
+};
+
+module.exports = {flatten, unflatten, patch, validKeys, validValues};
