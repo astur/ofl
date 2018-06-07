@@ -15,12 +15,12 @@
     "url": "https://github.com/astur/ofl.git"
   },
   "dependencies": {
-    "c-e": "^1.0.0",
-    "easytype": "0.0.4"
+    "c-e": "^1.0.3",
+    "easytype": "^1.0.0"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
-    "eslint": "^4.7.2",
+    "ava": "^0.25.0",
+    "eslint": "^4.19.1",
     "eslint-config-astur": "0.0.2"
   },
   "license": "MIT"
