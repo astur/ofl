@@ -9,6 +9,7 @@ const {
     SerializableError,
     ObjectError,
 } = require('./lib/errors');
+const {_flatten, _unflatten} = require('./lib/plumbing');
 
 test('ofl.flatten', t => {
     t.deepEqual(
@@ -155,5 +156,38 @@ test('ofl.validValues', t => {
     t.notThrows(
         () => ofl.validValues([1, true, null, '', [1, true, null, '']]),
         'all valid types',
+    );
+});
+
+test('plumbings', t => {
+    t.deepEqual(
+        _flatten({a: {b: {c: 1}}}),
+        {'a.b.c': 1},
+        'easy flatten',
+    );
+    t.deepEqual(
+        _flatten({b: {c: 1}}, 'a'),
+        {'a.b.c': 1},
+        'prefix',
+    );
+    t.deepEqual(
+        _flatten({a: {b: {c: 1}}}, '', '|'),
+        {'a|b|c': 1},
+        'delimiter',
+    );
+    t.deepEqual(
+        _unflatten({'a.b.c': 1}),
+        {a: {b: {c: 1}}},
+        'easy unflatten',
+    );
+    t.deepEqual(
+        _unflatten({'a.b.c': 1}, 'a'),
+        {b: {c: 1}},
+        'prefix',
+    );
+    t.deepEqual(
+        _unflatten({'a|b|c': 1}, '', '|'),
+        {a: {b: {c: 1}}},
+        'delimiter',
     );
 });
